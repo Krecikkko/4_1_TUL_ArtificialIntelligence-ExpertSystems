@@ -1,0 +1,166 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f7fb;
+    color: #1f2937;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 8px;
+    font-size: 36px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #6b7280;
+    margin-bottom: 32px;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.card h2 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 24px;
+}
+
+canvas {
+    display: block;
+    margin: 0 auto 20px auto;
+    background: #ffffff;
+    border: 2px solid #d1d5db;
+    border-radius: 8px;
+    cursor: crosshair;
+    max-width: 100%;
+    touch-action: none;
+}
+
+.buttons {
+    display: flex;
+    gap: 12px;
+}
+
+button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+button.secondary {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+button.secondary:hover {
+    background: #d1d5db;
+}
+
+button:disabled {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+.result-box {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.digit-result {
+    font-size: 88px;
+    font-weight: bold;
+    color: #2563eb;
+    line-height: 1;
+}
+
+.confidence-text {
+    margin-top: 10px;
+    color: #6b7280;
+}
+
+h3 {
+    margin-bottom: 16px;
+}
+
+.probability-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.digit-label {
+    width: 18px;
+    font-weight: bold;
+}
+
+.bar-background {
+    flex: 1;
+    height: 10px;
+    background: #e5e7eb;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background: #2563eb;
+    border-radius: 999px;
+}
+
+.probability-value {
+    width: 60px;
+    text-align: right;
+    font-size: 14px;
+    color: #374151;
+}
+
+.error-message {
+    color: #dc2626;
+    margin-top: 12px;
+}
+
+@media (max-width: 768px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .container {
+        margin: 20px auto;
+        padding: 16px;
+    }
+
+    h1 {
+        font-size: 30px;
+    }
+}
