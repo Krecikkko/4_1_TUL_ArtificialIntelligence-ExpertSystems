@@ -5,7 +5,14 @@ from algorithms.algorithm import configure_logging
 
 def parse_arguments():
     parser = argparse.ArgumentParser(
-        description="15-Puzzle Solver"
+        description="15-Puzzle Solver",
+        add_help=False
+    )
+
+    parser.add_argument(
+        "--help",
+        action="help",
+        help="Show this help message and exit"
     )
     
     algorithms = parser.add_mutually_exclusive_group(required=True)
@@ -28,11 +35,11 @@ def parse_arguments():
         help="Iterative deepening DFS (e.g. LURD)"
     )
 
-    # algorithms.add_argument(
-    #     "-h", "--bf",
-    #     metavar="HEURISTIC",
-    #     help="Best-first search heuristic"
-    # )
+    algorithms.add_argument(
+        "-h", "--bf",
+        metavar="HEURISTIC",
+        help="Best-first search heuristic"
+    )
 
     algorithms.add_argument(
         "-a", "--astar",
