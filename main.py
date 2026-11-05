@@ -1,6 +1,7 @@
 import argparse
 
-from algorithms import Algorithm, Bfs
+from algorithms import Bfs
+from algorithms.algorithm import configure_logging
 
 def parse_arguments():
     parser = argparse.ArgumentParser(
@@ -51,48 +52,38 @@ def parse_arguments():
 def read_puzzle():
     rows, cols = map(int, input().split())
 
-    puzzle = []
+    board = []
 
     for _ in range(rows):
         row = list(map(int, input().split()))
-        puzzle.append(row)
+        board.append(row)
 
-    return rows, cols, puzzle
+    return rows, cols, board
 
 
 def main():
+    configure_logging()
+
     args = parse_arguments()
 
-    R, C, board = read_puzzle()
-
-    for i in range(R):
-            print(str(board[i][0]) + " " + str(board[i][1]))
-
+    rows, cols, board = read_puzzle()
 
     if args.bfs is not None:
-        print("Algorithm: BFS")
-        print("Order:", args.bfs)
-        Bfs.solve(args.bfs, R, C, board)
+        algorithm = Bfs()
+        solution = algorithm.solve(
+            args.bfs, rows, cols, board
+        )
+    else:
+        raise NotImplementedError(
+            "Selected algorithm is not implemented yet"
+        )
 
-    elif args.dfs is not None:
-        print("Algorithm: DFS")
-        print("Order:", args.dfs)
-
-    elif args.idfs is not None:
-        print("Algorithm: IDFS")
-        print("Order:", args.idfs)
-
-    elif args.bf is not None:
-        print("Algorithm: Best-first")
-        print("Heuristic:", args.bf)
-
-    elif args.astar is not None:
-        print("Algorithm: A*")
-        print("Heuristic:", args.astar)
-
-    elif args.sma is not None:
-        print("Algorithm: SMA*")
-        print("Heuristic:", args.sma)
+    if solution is None:
+        print(-1)
+        print()
+    else:
+        print(len(solution))
+        print(solution)
 
 
 if __name__ == '__main__':

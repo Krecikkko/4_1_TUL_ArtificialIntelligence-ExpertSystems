@@ -1,2 +1,2 @@
-from .Algorithm import Algorithm
-from .Bfs import Bfs
+from .algorithm import Algorithm
+from .bfs import Bfs
