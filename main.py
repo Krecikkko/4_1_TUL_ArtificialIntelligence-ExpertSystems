@@ -1,7 +1,9 @@
 import argparse
 
-from algorithms import Bfs
+from algorithms import Bfs, AStar
 from algorithms.algorithm import configure_logging
+from heuristics.factory import create_heuristic
+from puzzle import Puzzle
 
 def parse_arguments():
     parser = argparse.ArgumentParser(
@@ -75,11 +77,25 @@ def main():
 
     rows, cols, board = read_puzzle()
 
+    puzzle = Puzzle(rows, cols, board)
+
     if args.bfs is not None:
         algorithm = Bfs()
         solution = algorithm.solve(
-            args.bfs, rows, cols, board
+            puzzle, args.bfs
         )
+    # elif args.bf is not None:
+    #     heuristic = create_heuristic(args.bf)
+    #     algorithm = BestFirst(heuristic)
+    #     solution = algorithm.solve(puzzle)
+    elif args.astar is not None:
+        heuristic = create_heuristic(args.astar)
+        algorithm = AStar(heuristic)
+        solution = algorithm.solve(puzzle)
+    # elif args.sma is not None:
+    #     heuristic = create_heuristic(args.sma)
+    #     algorithm = SMAStar(heuristic)
+    #     solution = algorithm.solve(puzzle)
     else:
         raise NotImplementedError(
             "Selected algorithm is not implemented yet"

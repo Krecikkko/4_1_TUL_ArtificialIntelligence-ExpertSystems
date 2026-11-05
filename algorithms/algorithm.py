@@ -1,10 +1,10 @@
-
 import logging
 import sys
 import time
 
 from abc import ABC, abstractmethod
 from functools import wraps
+from puzzle import Puzzle
 
 
 # Change to False to disable logging
@@ -48,9 +48,7 @@ class Algorithm(ABC):
     @abstractmethod
     def solve(
         self,
-        order: str,
-        rows: int,
-        cols: int,
-        board: list[list[int]]
+        puzzle: Puzzle,
+        parameter: str
     ) -> str | None:
         pass
