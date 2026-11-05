@@ -1,3 +1,4 @@
+import random
 from collections import deque
 from .algorithm import Algorithm, measure_execution
 
@@ -28,7 +29,14 @@ class Bfs(Algorithm):
         zero_index = self.get_free_space(board)
         zero_row, zero_col = divmod(zero_index, cols)
 
-        for move in order:
+        # Randomize move order separately for every node
+        if order.startswith("R"):
+            move_order = list("LRUD")
+            random.shuffle(move_order)
+        else:
+            move_order = order
+            
+        for move in move_order:
             dr, dc = self.directions[move]
 
             tile_row = zero_row + dr
