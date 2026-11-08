@@ -1,0 +1,12 @@
+# Deep learning (Keras 3 is bundled with TensorFlow >= 2.16; saved models use Keras 3.x)
+tensorflow>=2.16
+keras>=3.0
+
+# Numerics, plotting, evaluation metrics
+numpy>=1.26
+matplotlib>=3.8
+scikit-learn>=1.4
+
+# Web app (app.py)
+flask>=3.0
+pillow>=10.0
