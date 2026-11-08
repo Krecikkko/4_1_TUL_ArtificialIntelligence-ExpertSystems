@@ -1,3 +1,5 @@
+# Requires Python 3.10-3.13 (TensorFlow has no stable wheels for Python 3.14 yet)
+
 # Deep learning (Keras 3 is bundled with TensorFlow >= 2.16; saved models use Keras 3.x)
 tensorflow>=2.16
 keras>=3.0
