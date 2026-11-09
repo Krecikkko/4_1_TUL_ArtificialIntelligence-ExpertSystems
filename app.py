@@ -14,15 +14,20 @@ model = tf.keras.models.load_model("models/ANN-4.keras")
 
 
 def preprocess_image(image_data):
+    # Decoding the string of characters from webpage
     encoded = image_data.split(",", 1)[1]
     image_bytes = base64.b64decode(encoded)
-
+    # Reading the image in grayscale
     image = Image.open(io.BytesIO(image_bytes)).convert("L")
+    # Inverting the colours
     image = ImageOps.invert(image)
 
     # Remove faint background pixels
+    # Pixels with values lower than 20 are set to 0
+    # Getting rid of antialiasing
     image = image.point(lambda p: 0 if p < 20 else p)
 
+    # Calculate a frame around the digit
     bbox = image.getbbox()
     if bbox is None:
         raise ValueError("Please draw a digit first.")
@@ -40,6 +45,7 @@ def preprocess_image(image_data):
     processed.paste(image, (x, y))
 
     # Calculate center of mass
+    # Wyważony środek ciężkości masy jasnych pikseli
     pixels = np.asarray(processed, dtype=np.float32)
 
     yy, xx = np.indices(pixels.shape)
@@ -49,6 +55,11 @@ def preprocess_image(image_data):
         center_x = (xx * pixels).sum() / mass
         center_y = (yy * pixels).sum() / mass
 
+        # Calculating the shift needed to be performed
+        # As to place the center of mass in the middle
+        # of the matrix
+        # It is crucial because in MNIST the digits are also
+        # centred relative to the center of mass
         shift_x = int(round(13.5 - center_x))
         shift_y = int(round(13.5 - center_y))
 
@@ -70,7 +81,7 @@ def preprocess_image(image_data):
 
         pixels = centered
 
-    # Optional: save the processed image for debugging
+    # Save the processed image for debugging
     Image.fromarray(pixels.astype(np.uint8)).resize(
         (280, 280), Image.Resampling.NEAREST
     ).save("processed_digit.png")
