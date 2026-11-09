@@ -17,8 +17,8 @@ os.makedirs("results", exist_ok=True)
 # 2. Normalize pixels
 x_test = x_test.astype("float32") / 255.0
 
-# 3. Load the trained ANN
-model = keras.models.load_model("models/digit_model.keras")
+# 3. Load ANN-4, the same trained model used by the web app
+model = keras.models.load_model("models/ANN-4.keras")
 
 # 4. Predict all test images
 probabilities = model.predict(x_test, verbose=0)
@@ -37,7 +37,7 @@ disp = ConfusionMatrixDisplay(
     display_labels=np.arange(10)
 )
 disp.plot(ax=ax, cmap="Blues", values_format="d")
-plt.title("MNIST Confusion Matrix")
+plt.title("ANN-4 MNIST Confusion Matrix")
 plt.tight_layout()
 plt.savefig("results/confusion_matrix.png", dpi=150)
 plt.show()
@@ -63,7 +63,7 @@ for ax, index in zip(axes.flat, incorrect[:20]):
 for ax in axes.flat[len(incorrect[:20]):]:
     ax.axis("off")
 
-plt.suptitle("Incorrectly Classified MNIST Digits")
+plt.suptitle("ANN-4 Incorrectly Classified MNIST Digits")
 plt.tight_layout()
 plt.savefig("results/incorrect_predictions.png", dpi=150)
 plt.show()

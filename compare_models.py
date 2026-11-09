@@ -3,11 +3,18 @@ import os
 import random
 import csv
 import numpy as np
-import tensorflow as tf
 import matplotlib.pyplot as plt
 
-from tensorflow import keras
-from tensorflow.keras import layers
+# pyright: reportMissingModuleSource=false
+try:
+    import tensorflow as tf
+    from tensorflow import keras
+    from tensorflow.keras import layers
+except ImportError as exc:
+    raise ImportError(
+        "TensorFlow is required to run this script. "
+        "Install it with: pip install tensorflow"
+    ) from exc
 
 os.makedirs("results", exist_ok=True)
 os.makedirs("models", exist_ok=True)
