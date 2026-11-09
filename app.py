@@ -5,12 +5,12 @@ import io
 import numpy as np
 from flask import Flask, jsonify, render_template, request
 from PIL import Image, ImageOps
-from tensorflow import keras
+import tensorflow as tf
 
 app = Flask(__name__)
 
 # Load the model - ANN-4
-model = keras.models.load_model("models/ANN-4.keras")
+model = tf.keras.models.load_model("models/ANN-4.keras")
 
 
 def preprocess_image(image_data):
