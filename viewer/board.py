@@ -1,4 +1,3 @@
-
 class PuzzleBoard:
     DIRECTIONS = {
         "L": (0, 1),
