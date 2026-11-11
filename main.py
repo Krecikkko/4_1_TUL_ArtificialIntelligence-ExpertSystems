@@ -1,6 +1,6 @@
 import argparse
 
-from algorithms import Bfs, AStar
+from algorithms import Bfs, Dfs, AStar
 from algorithms.algorithm import configure_logging
 from heuristics.factory import create_heuristic
 from puzzle import Puzzle
@@ -83,6 +83,11 @@ def main():
         algorithm = Bfs()
         solution = algorithm.solve(
             puzzle, args.bfs
+        )
+    elif args.dfs is not None:
+        algorithm = Dfs()
+        solution = algorithm.solve(
+            puzzle, args.dfs
         )
     # elif args.bf is not None:
     #     heuristic = create_heuristic(args.bf)
