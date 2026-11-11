@@ -2,6 +2,12 @@
 
 ## Run puzzle solver
 
+### Get input from file, display output in bash and save to file
+
+```bash
+python main.py --bfs LURD < tests/examples/puzzle1.txt | tee tests/solutions/solution.txt
+```
+
 ### Get input from file and save to file
 
 ```bash
