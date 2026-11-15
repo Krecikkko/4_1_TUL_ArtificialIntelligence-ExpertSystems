@@ -1,6 +1,6 @@
 import argparse
 
-from algorithms import Bfs, Dfs, Idfs, AStar
+from algorithms import Bfs, Dfs, Idfs, AStar, SMAStar, BestFirst
 from algorithms.algorithm import configure_logging
 from heuristics.factory import create_heuristic
 from puzzle import Puzzle
@@ -94,18 +94,18 @@ def main():
         solution = algorithm.solve(
             puzzle, args.idfs
         )
-    # elif args.bf is not None:
-    #     heuristic = create_heuristic(args.bf)
-    #     algorithm = BestFirst(heuristic)
-    #     solution = algorithm.solve(puzzle)
+    elif args.bf is not None:
+        heuristic = create_heuristic(args.bf)
+        algorithm = BestFirst(heuristic)
+        solution = algorithm.solve(puzzle)
     elif args.astar is not None:
         heuristic = create_heuristic(args.astar)
         algorithm = AStar(heuristic)
         solution = algorithm.solve(puzzle)
-    # elif args.sma is not None:
-    #     heuristic = create_heuristic(args.sma)
-    #     algorithm = SMAStar(heuristic)
-    #     solution = algorithm.solve(puzzle)
+    elif args.sma is not None:
+        heuristic = create_heuristic(args.sma)
+        algorithm = SMAStar(heuristic)
+        solution = algorithm.solve(puzzle)
     else:
         raise NotImplementedError(
             "Selected algorithm is not implemented yet"
