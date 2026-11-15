@@ -4,4 +4,4 @@ from .dfs import Dfs
 from .idfs import Idfs
 from .best_first import BestFirst
 from .astar import AStar
-from .sma import Sma
+from .sma import SMAStar
