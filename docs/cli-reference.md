@@ -9,21 +9,21 @@ Exactly one algorithm option is required. The options form an `argparse` mutuall
 
 ## Options
 
-| Argument | Algorithm | Parameter | Status |
+| Argument | Algorithm | Parameter | Docs |
 |---|---|---|---|
-| `-b`, `--bfs` | Breadth-first search | Movement order | ✅ Functional |
-| `-d`, `--dfs` | Depth-first search | Movement order | ❌ Parsed only, raises `NotImplementedError` |
-| `-i`, `--idfs` | Iterative deepening DFS | Movement order | ❌ Parsed only, raises `NotImplementedError` |
-| `-h`, `--bf` | Best-first search | Heuristic ID | ❌ Parsed only, raises `NotImplementedError` |
-| `-a`, `--astar` | A\* | Heuristic ID | ✅ Functional |
-| `-s`, `--sma` | SMA\* | Heuristic ID | ❌ Parsed only, raises `NotImplementedError` |
+| `-b`, `--bfs` | Breadth-first search | Movement order | [bfs.md](algorithms/bfs.md) |
+| `-d`, `--dfs` | Depth-first search | Movement order | [dfs.md](algorithms/dfs.md) |
+| `-i`, `--idfs` | Iterative deepening DFS | Movement order | [idfs.md](algorithms/idfs.md) |
+| `-h`, `--bf` | Best-first search | Heuristic ID | [best-first.md](algorithms/best-first.md) |
+| `-a`, `--astar` | A\* | Heuristic ID | [astar.md](algorithms/astar.md) |
+| `-s`, `--sma` | SMA\* | Heuristic ID | [sma.md](algorithms/sma.md) |
 | `--help` | — | — | Shows usage and exits |
 
 > **Note:** `-h` selects Best-first search, as the assignment requires. For this reason the parser is created with `add_help=False`, and help is available **only** as `--help`.
 
 ## Movement order
 
-The movement order is a permutation of the letters `L`, `R`, `U`, `D`. It sets the order in which successors are generated, and so the order in which uninformed algorithms explore them.
+The movement order is a permutation of the letters `L`, `R`, `U`, `D`. It sets the order in which successors are generated, and so the order in which the uninformed algorithms (`-b`, `-d`, `-i`) explore them. The informed algorithms do not take a movement order and always use `LURD`.
 
 | Letter | Meaning (the **numbered tile** moves…) |
 |---|---|
@@ -43,11 +43,11 @@ Consequences of these rules:
 
 - A single `R` (for example `-b R`) is **rejected** because it is not four letters long.
 - The six deterministic orders that start with `R` (such as `RDLU`) cannot be used deterministically, because they all mean "random".
-- The order is validated only when the first node is expanded. If the initial state is already the goal, an invalid order is never detected.
+- BFS and DFS validate the order only when the first node is expanded, so if the initial state is already the goal, an invalid order is never detected. IDFS validates it before searching and raises `ValueError("Move order must be a permutation of LRUD")`.
 
 ## Heuristic identifiers
 
-These are used by `-a` (and, once implemented, by `-h` and `-s`). Matching is case-insensitive (`heuristic_id.lower()`).
+These are used by `-h`, `-a` and `-s`. Matching is case-insensitive (`heuristic_id.lower()`).
 
 | ID | Class | Documentation |
 |---|---|---|
@@ -78,7 +78,7 @@ The input is **not validated**. Wrong row lengths, duplicate tiles or a missing 
 |---|---|---|
 | Solution found | number of moves | move sequence, e.g. `UL` |
 | Initial state is the goal | `0` | empty line |
-| Search space exhausted without a solution | `-1` | empty line |
+| No solution found (search space exhausted, or SMA\* found the board unsolvable) | `-1` | empty line |
 
 Example:
 
@@ -112,10 +112,18 @@ python3 main.py --bfs DRUL < tests/examples/puzzle1.txt
 # BFS, randomized order for each expanded node
 python3 main.py -b RLUD < tests/examples/puzzle1.txt
 
+# DFS and IDFS
+python3 main.py -d LURD < tests/examples/puzzle3.txt
+python3 main.py --idfs DLUR < tests/examples/puzzle3.txt
+
 # A* with each heuristic
 python3 main.py -a manhattan < tests/examples/puzzle1.txt
 python3 main.py -a misplaced < tests/examples/puzzle1.txt
 python3 main.py --astar zero < tests/examples/puzzle1.txt
+
+# Best-first and SMA*
+python3 main.py -h manhattan < tests/examples/puzzle2.txt
+python3 main.py --sma misplaced < tests/examples/puzzle3.txt
 
 # Inline input through a here-document
 python3 main.py -a manhattan <<'EOF'
@@ -131,9 +139,8 @@ EOF
 | Condition | Result |
 |---|---|
 | No algorithm option, or two of them | `argparse` usage error on stderr, exit code 2 |
-| `-d`, `-i`, `-h`, `-s` | The puzzle is read from stdin **first**, then `NotImplementedError` with a traceback |
 | Unknown heuristic ID | `ValueError: Unknown heuristic: …` with a traceback |
-| Invalid movement order | `ValueError: Invalid movement order` with a traceback (raised when the first node is expanded) |
-| Unsolvable puzzle | No early detection. The search runs until the reachable space is exhausted, which on 4×4 boards does not finish in practice |
+| Invalid movement order | `ValueError` with a traceback. BFS and DFS raise `Invalid movement order` when the first node is expanded; IDFS raises `Move order must be a permutation of LRUD` before searching |
+| Unsolvable puzzle | SMA\* prints `-1` immediately. The other algorithms have no early detection and search until the reachable space is exhausted, which on 4×4 boards does not finish in practice |
 
 The program has no custom exception handling. Errors appear as standard Python tracebacks with exit code 1.

@@ -128,11 +128,11 @@ Boards with one row or one column work the same way: vertical or horizontal move
 
 > **Assignment requirement:** if the movement order begins with `R`, successor ordering must be randomized independently for each expanded node.
 
-**Status: implemented.** The shuffle is done *inside* `get_successors`, and both BFS and A\* call `get_successors` once per expanded node. Every expansion therefore gets a fresh `random.shuffle` of `["L", "R", "U", "D"]`. The order is not chosen once per run.
+**Status: implemented.** The shuffle is done *inside* `get_successors`, and every algorithm calls `get_successors` once per expanded node. Every expansion therefore gets a fresh `random.shuffle` of `["L", "R", "U", "D"]`. The order is not chosen once per run.
 
 Caveats:
 
-- The RNG is **not seeded**, so runs cannot be reproduced. The solution length found by BFS is still optimal, but the move sequence may differ between runs when several optimal solutions exist.
+- The solver does **not seed** the RNG, so runs cannot be reproduced. The solution length found by BFS and IDFS is still optimal, but the move sequence may differ between runs when several optimal solutions exist. For DFS, even the solution length changes between runs. The [benchmark](benchmark.md#study-design) seeds `random` itself, so its runs are reproducible.
 - The parameter must still be a valid four-letter permutation. `R` alone is rejected (see the [CLI reference](cli-reference.md#movement-order)).
 - Any permutation starting with `R` means "random". The six deterministic orders `R???` cannot be used.
-- `AStar` always passes `"LURD"`, so it never uses random ordering.
+- `BestFirst`, `AStar` and `SMAStar` always use `"LURD"`, so they never use random ordering.

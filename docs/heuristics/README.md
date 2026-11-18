@@ -1,6 +1,6 @@
 # Heuristics
 
-A heuristic $h(n)$ estimates the number of moves still needed to reach the goal from state $n$. Informed algorithms use it to choose which node to expand next. Currently only [A\*](../algorithms/astar.md) uses one. Best-first and SMA\* are planned to use the same interface.
+A heuristic $h(n)$ estimates the number of moves still needed to reach the goal from state $n$. Informed algorithms use it to choose which node to expand next. Three algorithms use one: [Best-first](../algorithms/best-first.md), [A\*](../algorithms/astar.md) and [SMA\*](../algorithms/sma.md). All of them receive the heuristic through the same interface.
 
 ## Shared interface
 

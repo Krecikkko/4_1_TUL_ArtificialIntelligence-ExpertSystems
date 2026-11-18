@@ -9,7 +9,10 @@ from time import perf_counter
 from puzzle import Puzzle
 
 
-ROOT = Path(__file__).resolve().parent
+BENCHMARK_DIR = Path(__file__).resolve().parent
+ROOT = BENCHMARK_DIR.parent
+BOARDS_DIR = BENCHMARK_DIR / "boards"
+RESULTS_DIR = BENCHMARK_DIR / "results"
 
 
 def verify_solution(output, puzzle):
@@ -77,7 +80,7 @@ def main():
     )
     args = parser.parse_args()
 
-    directory = ROOT / "tests" / "benchmark_boards_full"
+    directory = BOARDS_DIR
     with (directory / "boards.csv").open(newline="", encoding="utf-8") as file:
         boards = list(csv.DictReader(file))
 
@@ -96,9 +99,10 @@ def main():
 
     trials = 1 if args.check else 3
     filename = "full_check.csv" if args.check else "full_results.csv"
-    results_file = ROOT / filename
+    results_file = RESULTS_DIR / filename
 
     # Refuse to overwrite an earlier run. Rename it before rerunning.
+    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     if results_file.exists():
         parser.error(f"{filename} already exists. Rename it before rerunning.")
 

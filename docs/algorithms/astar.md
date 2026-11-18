@@ -139,10 +139,10 @@ function ASTAR-SOLVE(puzzle, h):
 ## 7.5 Complexity analysis
 
 - **Time:** in the worst case $O(b^{d})$, the same as BFS. In practice it is much less with a good heuristic. The number of expansions grows roughly as $b_{\text{eff}}^{\,d}$, and a more informed $h$ lowers $b_{\text{eff}}$. Each push or pop costs $O(\log |open|)$. Each heuristic evaluation costs $O(R \cdot C)$ for the implemented heuristics, which recompute $h$ from scratch for every generated state.
-- **Space:** $O(\text{number of generated states})$. `g_score`, `parents` and the heap (which also holds outdated entries) all grow with the search. Like BFS, A\* keeps every discovered state in memory, so **memory is usually the limit, not time**. SMA\* (planned) is meant to address this.
+- **Space:** $O(\text{number of generated states})$. `g_score`, `parents` and the heap (which also holds outdated entries) all grow with the search. Like BFS, A\* keeps every discovered state in memory, so **memory is usually the limit, not time**. [SMA\*](sma.md) addresses this with a fixed node budget.
 - **Effect of heuristic quality:** `zero` < `misplaced` < `manhattan` in how informative they are (see [heuristics](../heuristics/README.md#comparison)). With `zero`, A\* expands the same levels as BFS, and it is slower because of the heap and the late goal test.
-- **Hard instances:** in a local run, `tests/examples/puzzle2.txt`, which is solvable, did not finish within 60 seconds with `manhattan`. Hard 4×4 instances usually need stronger heuristics (linear conflict, pattern databases) or memory-bounded or iterative methods (IDA\*, SMA\*). None of these are implemented.
-- **Unsolvable inputs:** there is no parity check. A\* would explore the entire reachable component before returning `None`.
+- **Hard instances:** in a local run, `tests/examples/puzzle2.txt`, which is solvable, did not finish within 60 seconds with `manhattan`. Hard 4×4 instances usually need stronger heuristics (linear conflict, pattern databases) or iterative methods such as IDA\*. These are not implemented. [SMA\*](sma.md) bounds memory but does not make such instances fast.
+- **Unsolvable inputs:** there is no parity check (only SMA\* has one). A\* would explore the entire reachable component before returning `None`.
 
 ## 7.6 Optimality and completeness
 
@@ -176,4 +176,4 @@ All `-a` runs with the implemented heuristics therefore return optimal (shortest
 | Per-node overhead | $O(1)$ queue operations | $O(\log n)$ heap operations + $O(R \cdot C)$ heuristic |
 | Practical performance | Only shallow instances | Much deeper instances with `manhattan`, but still limited by memory on hard 4×4 puzzles |
 
-No benchmark results are included here, because none have been measured systematically in this project.
+Measured results are in the [benchmark documentation](../benchmark.md#summary-of-full_resultscsv). A\* solved 348 of 360 runs, all of them optimally; the 12 failures hit the memory limit at scramble length 20. BFS solved 333 runs and failed 27 times on memory.

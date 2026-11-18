@@ -1,6 +1,6 @@
 # 15-Puzzle Solver — Documentation
 
-This directory contains the technical documentation of the 15-puzzle solver developed for the **Artificial Intelligence and Expert Systems** course. The documentation describes the code as it is currently implemented. Features that are planned but not implemented are marked as such.
+This directory contains the technical documentation of the 15-puzzle solver developed for the **Artificial Intelligence and Expert Systems** course. The documentation describes the code as it is currently implemented.
 
 ## Project overview
 
@@ -30,32 +30,36 @@ Any board with `R` rows and `C` columns is accepted (`R`, `C` ≥ 1). The board 
 | Feature | Status | Documentation |
 |---|---|---|
 | Breadth-first search (`-b`) | ✅ Implemented | [algorithms/bfs.md](algorithms/bfs.md) |
+| Depth-first search (`-d`) | ✅ Implemented | [algorithms/dfs.md](algorithms/dfs.md) |
+| Iterative deepening DFS (`-i`) | ✅ Implemented | [algorithms/idfs.md](algorithms/idfs.md) |
+| Best-first search (`-h`) | ✅ Implemented | [algorithms/best-first.md](algorithms/best-first.md) |
 | A\* search (`-a`) | ✅ Implemented | [algorithms/astar.md](algorithms/astar.md) |
-| Depth-first search (`-d`) | ⏳ Planned (stub class only) | [algorithms/README.md](algorithms/README.md#planned-algorithms) |
-| Iterative deepening DFS (`-i`) | ⏳ Planned (stub class only) | [algorithms/README.md](algorithms/README.md#planned-algorithms) |
-| Best-first search (`-h`) | ⏳ Planned (stub class only) | [algorithms/README.md](algorithms/README.md#planned-algorithms) |
-| SMA\* (`-s`) | ⏳ Planned (stub class only) | [algorithms/README.md](algorithms/README.md#planned-algorithms) |
+| SMA\* (`-s`) | ✅ Implemented | [algorithms/sma.md](algorithms/sma.md) |
 | Zero heuristic | ✅ Implemented | [heuristics/zero.md](heuristics/zero.md) |
 | Misplaced-tiles heuristic | ✅ Implemented | [heuristics/misplaced-tiles.md](heuristics/misplaced-tiles.md) |
 | Manhattan-distance heuristic | ✅ Implemented | [heuristics/manhattan.md](heuristics/manhattan.md) |
 | Random movement order (`R…`) | ✅ Implemented (with caveats) | [puzzle-representation.md](puzzle-representation.md#random-successor-ordering) |
 | Execution-time logging | ✅ Implemented (stderr) | [architecture.md](architecture.md#logging-and-execution-time-measurement) |
-| Solvability check | ❌ Not implemented | [Known limitations](#known-limitations) |
-| Automated tests | ❌ Not implemented (sample inputs only) | [development.md](development.md#testing) |
+| Benchmark (empirical study) | ✅ Implemented (Linux only) | [benchmark.md](benchmark.md) |
+| Solution viewer (Tkinter) | ✅ Implemented | [getting-started.md](getting-started.md#viewing-a-solution) |
+| Solvability check | ⚠️ SMA\* only | [Known limitations](#known-limitations) |
+| Automated unit tests | ❌ Not implemented (the benchmark verifies solutions) | [development.md](development.md#testing) |
 
 ### Technology stack
 
 - **Language:** Python. Version 3.10 or newer is required because the code uses `X | None` type annotations (PEP 604). The project's `venv` uses Python 3.14.4.
-- **Dependencies:** standard library only (`argparse`, `collections.deque`, `heapq`, `itertools`, `random`, `logging`, `time`, `abc`, `functools`). There is no `requirements.txt`.
+- **Dependencies:** standard library only. The solver uses `argparse`, `collections`, `heapq`, `itertools`, `dataclasses`, `math`, `random`, `logging`, `time`, `abc` and `functools`. The viewer uses `tkinter`, and the benchmark uses `subprocess`, `csv` and `resource`. There is no `requirements.txt`.
 
 ### Known limitations
 
-- Only BFS and A\* run. The other algorithm flags are parsed, but they raise `NotImplementedError` after the puzzle has been read.
-- There is **no solvability check**. Half of all permutations cannot be solved. For such an input the search keeps going until it has explored every reachable state; it does not report `-1` early. On a 4×4 board this is not feasible in practice.
-- A\* ignores the movement order and always generates successors in the `LURD` order.
+- Only **SMA\*** checks solvability. For an unsolvable input, the other algorithms keep searching until they have explored every reachable state (or every path, for IDFS) before printing `-1`. On a 4×4 board this is not feasible in practice.
+- Best-first, A\* and SMA\* ignore the movement order and always generate successors in the `LURD` order.
+- The SMA\* memory limit (10 000 nodes) cannot be changed from the command line.
+- The random movement order is not seeded by the solver, so `R…` runs cannot be reproduced. The benchmark seeds them itself.
 - The input is not validated (dimensions, row lengths, duplicate or missing tiles).
 - Heuristic identifiers are names (`zero`, `misplaced`, `manhattan`), not numbers.
 - Logging is enabled by default (`DEBUG = True`) and prints to standard error.
+- The benchmark uses `resource` and runs only on Linux.
 
 More details are in the [CLI reference](cli-reference.md#behavior-and-error-handling) and in each algorithm page.
 
@@ -69,9 +73,14 @@ More details are in the [CLI reference](cli-reference.md#behavior-and-error-hand
 | [puzzle-representation.md](puzzle-representation.md) | State encoding, moves, successor generation |
 | [algorithms/README.md](algorithms/README.md) | Algorithm overview and comparison |
 | [algorithms/bfs.md](algorithms/bfs.md) | Breadth-first search |
+| [algorithms/dfs.md](algorithms/dfs.md) | Depth-first search |
+| [algorithms/idfs.md](algorithms/idfs.md) | Iterative deepening DFS |
+| [algorithms/best-first.md](algorithms/best-first.md) | Greedy best-first search |
 | [algorithms/astar.md](algorithms/astar.md) | A\* search |
+| [algorithms/sma.md](algorithms/sma.md) | SMA\* (memory-bounded A\*) |
 | [heuristics/README.md](heuristics/README.md) | Heuristic interface and comparison |
 | [heuristics/zero.md](heuristics/zero.md) | Zero heuristic |
 | [heuristics/misplaced-tiles.md](heuristics/misplaced-tiles.md) | Misplaced-tiles heuristic |
 | [heuristics/manhattan.md](heuristics/manhattan.md) | Manhattan-distance heuristic |
+| [benchmark.md](benchmark.md) | Empirical study: running, design, result files, summary |
 | [development.md](development.md) | Extending the project, conventions, debugging |

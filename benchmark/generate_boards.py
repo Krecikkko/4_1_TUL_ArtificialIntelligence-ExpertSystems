@@ -5,8 +5,7 @@ from pathlib import Path
 from puzzle import Puzzle
 
 
-ROOT = Path(__file__).resolve().parent
-OUTPUT = ROOT / "tests" / "benchmark_boards_full"
+OUTPUT = Path(__file__).resolve().parent / "boards"
 GOAL = tuple(range(1, 16)) + (0,)
 
 puzzle = Puzzle(4, 4, [list(GOAL[i:i + 4]) for i in range(0, 16, 4)])
