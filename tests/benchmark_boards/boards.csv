@@ -1,0 +1,5 @@
+board_id,scramble_length,board_seed
+scramble_4_1,4,100
+scramble_4_2,4,102
+scramble_8_1,8,103
+scramble_8_2,8,104
