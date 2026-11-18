@@ -1,0 +1,13 @@
+board_id,algorithm,move_order,heuristic,status,elapsed_ms,solution_length
+puzzle1,bfs,LURD,,solved,196.007,2
+puzzle1,dfs,LURD,,solved,214.719,86
+puzzle1,idfs,LURD,,solved,214.308,2
+puzzle1,best_first,,zero,solved,205.295,2
+puzzle1,best_first,,misplaced,solved,199.733,2
+puzzle1,best_first,,manhattan,solved,200.06,2
+puzzle1,astar,,zero,solved,214.912,2
+puzzle1,astar,,misplaced,solved,212.314,2
+puzzle1,astar,,manhattan,solved,198.954,2
+puzzle1,sma,,zero,solved,218.937,2
+puzzle1,sma,,misplaced,solved,205.209,2
+puzzle1,sma,,manhattan,solved,229.16,2
